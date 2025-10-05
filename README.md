@@ -17,6 +17,7 @@ In this project you will build such a pipeline.
   * [The configuration](#the-configuration)
   * [Running the entire pipeline or just a selection of steps](#Running-the-entire-pipeline-or-just-a-selection-of-steps)
   * [Pre-existing components](#pre-existing-components)
+- [In Case of Errors](#in-case-of-errors)
 - [Instructions](#instructions)
   * [Exploratory Data Analysis (EDA)](#exploratory-data-analysis-eda)
   * [Data cleaning](#data-cleaning)
@@ -192,6 +193,23 @@ You can see the parameters that they require by looking into their `MLproject` f
 - `get_data`: downloads the data. [MLproject](https://github.com/udacity/build-ml-pipeline-for-short-term-rental-prices/blob/main/components/get_data/MLproject)
 - `train_val_test_split`: segrgate the data (splits the data) [MLproject](https://github.com/udacity/build-ml-pipeline-for-short-term-rental-prices/blob/main/components/train_val_test_split/MLproject)
 
+## In Case of Errors
+
+When you make an error writing your conda.yml file, you might end up with an environment for the pipeline or one of the components that are corrupted. Most of the time mlflow realizes that and creates a new one every time you try to fix the problem. However, sometimes this does not happen, especially if the problem is in the pip dependencies. In that case, you might want to clean up all conda environments created by mlflow and try again. In order to do so, you can get a list of the environments you are about to remove by executing:
+
+```python
+> conda info --envs | grep mlflow | cut -f1 -d" "
+```
+
+If you are ok with that list, execute this command to clean them up:
+
+*Note*: This will remove ALL the environments with a name starting with mlflow. Use at your own risk.
+```python
+> for e in $(conda info --envs | grep mlflow | cut -f1 -d" "); 
+  do conda uninstall --name $e --all -y;
+  done
+```
+This will iterate over all the environments created by mlflow and remove them.
 
 ## Instructions
 

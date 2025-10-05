@@ -21,9 +21,10 @@ _steps = [
 
 
 # This automatically reads in the configuration
-@hydra.main(version_base=None, config_name='config')  # Adding version_base for Python 3.13 compatibility
+# Added config_path to avoid error: Cannot find primary config 'config'.
+@hydra.main(version_base=None, config_path=".", config_name='config')  # Adding version_base for Python 3.13 compatibility
 def go(config: DictConfig):
-
+    
     # Setup the wandb experiment. All runs will be grouped under this name
     os.environ["WANDB_PROJECT"] = config["main"]["project_name"]
     os.environ["WANDB_RUN_GROUP"] = config["main"]["experiment_name"]
@@ -31,17 +32,26 @@ def go(config: DictConfig):
     # Steps to execute
     steps_par = config['main']['steps']
     active_steps = steps_par.split(",") if steps_par != "all" else _steps
-
+    
+    # You can get the path at the root of the MLflow project with this:
+    root_path = hydra.utils.get_original_cwd()
+    
     # Move to a temporary directory
     with tempfile.TemporaryDirectory() as tmp_dir:
 
         if "download" in active_steps:
             # Download file and load in W&B
             _ = mlflow.run(
-                f"{config['main']['components_repository']}/get_data",
+                ## run form the repository (initial)
+                # f"{config['main']['components_repository']}/get_data",
+                # os.path.join(root_path, "components/get_data"),
+                # "main",
+                # version='main',
+                # env_manager="conda",
+                
+                ## run from current project (preffered)
+                os.path.join(root_path, "components/get_data"),
                 "main",
-                version='main',
-                env_manager="conda",
                 parameters={
                     "sample": config["etl"]["sample"],
                     "artifact_name": "sample.csv",
