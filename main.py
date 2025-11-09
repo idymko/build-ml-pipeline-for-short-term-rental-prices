@@ -93,10 +93,23 @@ def go(config: DictConfig):
             )
 
         if "data_check" in active_steps:
-            ##################
-            # Implement here #
-            ##################
-            pass
+            _ = mlflow.run(
+                os.path.join(hydra.utils.get_original_cwd(), "src", "data_check"),
+                "main",
+                # command: "pytest . -vv 
+                # --csv {csv}
+                # --ref {ref}
+                # --kl_threshold {kl_threshold} 
+                # --min_price {min_price} 
+                # --max_price {max_price}"
+                parameters = {
+                    "csv": "clean_sample.csv:latest",
+                    "ref": "clean_sample.csv:reference",
+                    "kl_threshold": config["data_check"]["kl_threshold"],
+                    "min_price": config["etl"]["min_price"],
+                    "max_price": config["etl"]["max_price"]
+                }
+            )
 
         if "data_split" in active_steps:
             ##################
@@ -132,6 +145,9 @@ def go(config: DictConfig):
 if __name__ == "__main__":
     
     # run only one step
+    # mlflow run . -P steps=download
+    # mlflow run src/eda
     # mlflow run . -P steps=basic_cleaning
+    # mlflow run . -P steps=data_check
     
     go()

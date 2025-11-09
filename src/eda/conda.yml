@@ -8,7 +8,7 @@ dependencies:
   - matplotlib=3.8.4
   - pandas=2.3.2
   - jupyterlab=4.4.7
-  - scikit-learn=1.3.2
+  - scikit-learn=1.3.2 # compatibility issues with python 3.13
   - pip=24.3.1
   - ydata-profiling=4.15.1
   - ipywidgets=8.1.3
