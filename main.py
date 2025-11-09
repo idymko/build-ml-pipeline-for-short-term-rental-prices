@@ -50,7 +50,8 @@ def go(config: DictConfig):
                 # env_manager="conda",
                 
                 ## run from current project (preffered)
-                os.path.join(root_path, "components/get_data"),
+                #os.path.join(root_path, "components/get_data"),
+                os.path.join(hydra.utils.get_original_cwd(), "components", "get_data"),
                 "main",
                 parameters={
                     "sample": config["etl"]["sample"],
@@ -61,10 +62,35 @@ def go(config: DictConfig):
             )
 
         if "basic_cleaning" in active_steps:
-            ##################
-            # Implement here #
-            ##################
-            pass
+            """
+                accept the parameters:
+                    input_artifact (the input artifact), 
+                    output_artifact (the name for the output artifact), 
+                    output_type (the type for the output artifact), 
+                    output_description (a description for the output artifact), 
+                    min_price (the minimum price to consider) and 
+                    max_price (the maximum price to consider)
+                    
+                NOTE: Remember that when you refer to an artifact stored on W&B, 
+                    you MUST specify a version or a tag. 
+                    For example, here the input_artifact should be sample.csv:latest 
+                    and NOT just sample.csv. If you forget to do this, you will see 
+                    a message like Attempted to fetch artifact without alias 
+                    (e.g. "<artifact_name>:v3" or "<artifact_name>:latest")
+                    
+            """
+            _ = mlflow.run(
+                os.path.join(hydra.utils.get_original_cwd(), "src", "basic_cleaning"),
+                "main",
+                parameters={
+                    "input_artifact": "sample.csv:latest", 
+                    "output_artifact": "clean_sample.csv", 
+                    "output_type": "clean_sample", 
+                    "output_description": "Data with outliers and null values removed",
+                    "min_price": config["etl"]["min_price"],
+                    "max_price": config["etl"]["max_price"]
+                }
+            )
 
         if "data_check" in active_steps:
             ##################
@@ -104,4 +130,8 @@ def go(config: DictConfig):
 
 
 if __name__ == "__main__":
+    
+    # run only one step
+    # mlflow run . -P steps=basic_cleaning
+    
     go()

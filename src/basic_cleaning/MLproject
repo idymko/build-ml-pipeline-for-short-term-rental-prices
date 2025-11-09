@@ -5,18 +5,34 @@ entry_points:
   main:
     parameters:
 
-      parameter1:
-        description: ## ADD DESCRIPTION
+      input_artifact:
+        description: Name of input input datafile
         type: string
 
-      parameter2:
-        description: ## ADD DESCRIPTION
+      output_artifact:
+        description: Name of output cleaned file
         type: string
 
-      parameter3:
-        description: ## ADD DESCRIPTION
+      output_type:
+        description: Type of output file
         type: string
 
+      output_description:
+        description: Decsription of output file
+        type: string
+
+      min_price:
+        description: Minimum pirce in the cleaned dataset
+        type: float
+
+      max_price:
+        description: Maximum pirce in the cleaned dataset
+        type: float
 
     command: >-
-        python run.py  --parameter1 {parameter1}  --parameter2 {parameter2}  --parameter3 {parameter3} 
+        python run.py  --input_artifact {input_artifact} \
+                       --output_artifact {output_artifact} \
+                       --output_type {output_type} \
+                       --output_description {output_description} \
+                       --min_price {min_price} \
+                       --max_price {max_price}
