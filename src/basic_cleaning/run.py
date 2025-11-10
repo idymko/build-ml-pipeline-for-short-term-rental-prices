@@ -26,6 +26,10 @@ def go(args):
     idx = df['price'].between(args.min_price, args.max_price)
     df = df[idx].copy()
     
+    logger.info(f"Drop rows that are not in the proper geolocation - outside of lon {-74.25}...{-73.50}, lat {40.5}...{41.2}")
+    idx = df['longitude'].between(-74.25, -73.50) & df['latitude'].between(40.5, 41.2)
+    df = df[idx].copy()
+    
     logger.info(f"Convert last_review to dataframe")
     df['last_review'] = pd.to_datetime(df['last_review'])
     

@@ -168,4 +168,9 @@ if __name__ == "__main__":
     
     # mlflow run . -P steps=test_regression_model
     
+    """
+    run a specific version of code from git and change some hydra options:
+    mlflow run https://github.com/idymko/build-ml-pipeline-for-short-term-rental-prices.git -v 1.0.0 -P hydra_options="etl.sample='sample2.csv'"
+    """
+    
     go()
