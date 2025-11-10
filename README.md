@@ -30,7 +30,12 @@ In this project you will build such a pipeline.
   * [Visualize the pipeline](#visualize-the-pipeline)
   * [Release the pipeline](#release-the-pipeline)
   * [Train the model on a new data sample](#train-the-model-on-a-new-data-sample)
-- [Cleaning up](#cleaning-up)
+- [In case of errors](#in-case-of-errors)
+  * [Environments](#environments)
+  * [MLflow & Wandb](#mlflow-&-wandb)
+- [License](#license)
+- [Submission](#submission)
+
 
 ## Preliminary steps
 
@@ -614,5 +619,5 @@ Please, make sure all steps are using **the same** python version and that you h
 
 ## Submission 
 
-Git: https://github.com/idymko/build-ml-pipeline-for-short-term-rental-prices.git
-Weight and Biases: https://wandb.ai/dkysylychyn-udacity/nyc_airbnb/overview
+* Git: https://github.com/idymko/build-ml-pipeline-for-short-term-rental-prices.git
+* Weight and Biases: https://wandb.ai/dkysylychyn-udacity/nyc_airbnb/overview
